@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Elbow Loading: Biceps Force vs Object Distance</title>
+<style>
+:root{--bg:#fafaf7;--card:#fff;--ink:#1d2327;--mute:#5d6770;--acc:#c2410c;--line:#e2e0d8;--c1:#2563eb;--c2:#c2410c;--c3:#15803d;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#15171a;--card:#1e2125;--ink:#ecebe6;--mute:#a1a8af;--acc:#fb923c;--line:#33373c;--c1:#60a5fa;--c2:#fb923c;--c3:#4ade80}}
+:root[data-theme="dark"]{--bg:#15171a;--card:#1e2125;--ink:#ecebe6;--mute:#a1a8af;--acc:#fb923c;--line:#33373c;--c1:#60a5fa;--c2:#fb923c;--c3:#4ade80}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 Georgia,"Times New Roman",serif}
+main{max-width:820px;margin:0 auto;padding:20px 16px 48px}
+h1{font-size:1.7rem;line-height:1.25;margin:.2em 0 .3em}
+h2{font-size:1.15rem;margin:0 0 .5em;color:var(--acc);font-family:system-ui,sans-serif;text-transform:uppercase;letter-spacing:.04em}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px;margin:14px 0}
+.mute{color:var(--mute);font-size:.92rem}
+code,.eq{font-family:ui-monospace,Menlo,Consolas,monospace}
+.eq{background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:8px 10px;margin:8px 0;overflow-x:auto;white-space:nowrap}
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:.92rem}
+th,td{border-bottom:1px solid var(--line);padding:6px 8px;text-align:right}
+th:first-child,td:first-child{text-align:left}
+label{display:block;font-family:system-ui,sans-serif;font-size:.9rem;margin:10px 0 2px}
+input[type=range]{width:100%}
+.out{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.out div{background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:10px;text-align:center}
+.out b{display:block;font-size:1.5rem;color:var(--acc);font-family:system-ui,sans-serif}
+svg{width:100%;height:auto;display:block}
+ul{padding-left:1.2em;margin:.3em 0}
+li{margin:.2em 0}
+.ph{background:rgba(194,65,12,.12);padding:0 4px;border-radius:3px}
+</style>
+</head>
+<body>
+<main>
+<div class="mute">Biomechanics Mid-Term Project · 2026</div>
+<h1>Effect of Object Distance from the Elbow on Estimated Biceps Force During Static Holding</h1>
+
+<div class="card">
+<h2>Author</h2>
+<p style="margin:0"><b>Shoxbonu Adilkhanova</b>, Student ID: 260466</p>
+</div>
+
+<div class="card">
+<h2>Objective</h2>
+<p>To develop a static-equilibrium model of the forearm and estimate how biceps force changes when an object is held at different distances from the elbow.</p>
+</div>
+
+<div class="card">
+<h2>Background</h2>
+<p>The forearm (radius and ulna) rotates about the elbow joint. The biceps brachii attaches to the radius a few centimetres from the joint and pulls the forearm upward. A held object and the weight of the forearm both pull it downward. Because the biceps attaches so close to the pivot, it must produce a force much larger than the weight it holds.</p>
+<p>This matters for understanding muscle and joint loading in lifting, carrying, rehabilitation and ergonomics. The model uses torque balance: when the arm is held still, the net torque about the elbow is zero.</p>
+</div>
+
+<div class="card">
+<h2>Theoretical model</h2>
+<svg viewBox="0 0 640 230" role="img" aria-label="Labeled diagram of the forearm as a lever about the elbow">
+<defs><marker id="ar" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="currentColor"/></marker></defs>
+<g style="color:var(--ink)" fill="none" stroke="currentColor" stroke-width="2">
+<line x1="80" y1="130" x2="560" y2="130" stroke-width="8" stroke-linecap="round" style="stroke:var(--mute)"/>
+<circle cx="80" cy="130" r="9" fill="var(--card)"/>
+<line x1="120" y1="200" x2="120" y2="140" marker-end="url(#ar)" style="color:var(--c1);stroke:var(--c1)"/>
+<line x1="230" y1="135" x2="230" y2="190" marker-end="url(#ar)" style="color:var(--c3);stroke:var(--c3)"/>
+<line x1="480" y1="135" x2="480" y2="195" marker-end="url(#ar)" style="color:var(--c2);stroke:var(--c2)"/>
+<line x1="80" y1="30" x2="120" y2="30" stroke-width="1"/><line x1="80" y1="30" x2="230" y2="30" stroke-width="1" transform="translate(0,22)"/><line x1="80" y1="30" x2="480" y2="30" stroke-width="1" transform="translate(0,44)"/>
+</g>
+<g font-family="system-ui,sans-serif" font-size="13" fill="var(--ink)">
+<text x="60" y="160" text-anchor="middle">Elbow (pivot)</text>
+<text x="128" y="215" fill="var(--c1)">F_b (biceps), a</text>
+<text x="238" y="206" fill="var(--c3)">m·g at c</text>
+<text x="488" y="206" fill="var(--c2)">M·g at d</text>
+<text x="126" y="34">a</text><text x="236" y="56">c</text><text x="486" y="78">d</text>
+</g></svg>
+<p class="mute">Forearm as a rigid lever. Biceps force F_b acts upward at distance a; forearm weight m·g acts at its centre of mass c; object weight M·g acts at distance d.</p>
+<p><b>Assumptions</b></p>
+<ul>
+<li>Forearm is a rigid lever held horizontal and motionless (static).</li>
+<li>Elbow is a frictionless pivot.</li>
+<li>Biceps force acts vertically at a fixed attachment distance.</li>
+<li>Forearm and object weights act vertically downward.</li>
+<li>Other muscles (co-contraction) are ignored.</li>
+</ul>
+<p><b>Variables</b></p>
+<div class="scroll"><table>
+<tr><th>Symbol</th><th>Meaning</th><th>Value / unit</th></tr>
+<tr><td>F_b</td><td>Biceps force</td><td>N</td></tr>
+<tr><td>R</td><td>Elbow joint reaction force</td><td>N</td></tr>
+<tr><td>M</td><td>Object mass</td><td>kg</td></tr>
+<tr><td>d</td><td>Object distance from elbow</td><td>m</td></tr>
+<tr><td>m</td><td>Forearm + hand mass</td><td>1.5 kg</td></tr>
+<tr><td>c</td><td>Forearm centre of mass distance</td><td>0.15 m</td></tr>
+<tr><td>a</td><td>Biceps attachment distance</td><td>0.04 m</td></tr>
+<tr><td>g</td><td>Gravitational acceleration</td><td>9.81 m/s²</td></tr>
+</table></div>
+<p><b>Equations</b></p>
+<div class="eq">ΣΤ = 0 : F_b·a − m·g·c − M·g·d = 0</div>
+<div class="eq">F_b = g (m·c + M·d) / a</div>
+<div class="eq">ΣF = 0 : R = F_b − (m + M)·g</div>
+<p class="mute">Dimension check: kg · m/s² · m / m = N ✓</p>
+</div>
+
+<div class="card">
+<h2>Predictions</h2>
+<p>Try it: change the object mass and distance.</p>
+<label>Object mass M: <b id="mv"></b> kg</label>
+<input id="M" type="range" min="0" max="10" step="0.5" value="2">
+<label>Distance from elbow d: <b id="dv"></b> m</label>
+<input id="D" type="range" min="0.10" max="0.40" step="0.01" value="0.30">
+<div class="out">
+<div><b id="fb">0</b>Biceps force F_b (N)</div>
+<div><b id="rr">0</b>Joint reaction R (N)</div>
+</div>
+<p class="mute" id="ratio"></p>
+
+<p style="margin-top:18px"><b>Graph: biceps force vs object distance</b></p>
+<svg id="chart" viewBox="0 0 640 320" role="img" aria-label="Biceps force versus object distance for three masses"></svg>
+
+<p><b>Table (N), forearm mass 1.5 kg, a = 0.04 m</b></p>
+<div class="scroll"><table id="tbl"></table></div>
+
+<p><b>Interpretation.</b> For a fixed mass, F_b rises linearly with d: moving the object farther from the elbow increases the required biceps force in proportion to the object's moment arm. For a fixed distance, F_b rises linearly with M. Because a ≪ d, the biceps force is several times larger than the weight of the object (here, about 7 to 9 times for a 2 kg object at 0.30 m).</p>
+</div>
+
+<div class="card">
+<h2>Evaluation</h2>
+<ul>
+<li><b>Method:</b> hand calculations for several conditions, reproduced by the calculator above (spreadsheet or Python can be used to verify).</li>
+<li><b>Sources of error:</b> estimated segment mass, centre of mass and attachment distance vary between people; the biceps line of action is not exactly vertical.</li>
+<li><b>Limitations:</b> the model estimates one muscle force. It does not include co-contraction, changing muscle moment arms, or joint contact forces. Results are model estimates, not measured internal forces.</li>
+<li><b>Future work:</b> add elbow angle, compare with published EMG or musculoskeletal-model values.</li>
+</ul>
+</div>
+
+<div class="card">
+<h2>Contributions and references</h2>
+<p><b>Contribution:</b> single author (research, model, calculations, website).</p>
+<p><b>AI contribution:</b> an AI assistant (Claude) was used to help structure the page and check the calculations; the author reviewed the content and can explain the model.</p>
+<ol>
+<li>Hall, S. J. <i>Basic Biomechanics</i>. McGraw-Hill.</li>
+<li>Winter, D. A. <i>Biomechanics and Motor Control of Human Movement</i>. Wiley.</li>
+<li>Nordin, M. &amp; Frankel, V. H. <i>Basic Biomechanics of the Musculoskeletal System</i>. Lippincott Williams &amp; Wilkins.</li>
+<li>McGinnis, P. M. <i>Biomechanics of Sport and Exercise</i>. Human Kinetics.</li>
+<li>Zatsiorsky, V. M. <i>Kinetics of Human Motion</i>. Human Kinetics.</li>
+</ol>
+</div>
+</main>
+<script>
+var g=9.81,m=1.5,c=0.15,a=0.04;
+function Fb(M,d){return g*(m*c+M*d)/a}
+function upd(){
+ var M=parseFloat(document.getElementById('M').value),d=parseFloat(document.getElementById('D').value);
+ var f=Fb(M,d),r=f-(m+M)*g;
+ document.getElementById('mv').textContent=M.toFixed(1);
+ document.getElementById('dv').textContent=d.toFixed(2);
+ document.getElementById('fb').textContent=f.toFixed(0);
+ document.getElementById('rr').textContent=r.toFixed(0);
+ document.getElementById('ratio').textContent=M>0?'Biceps force is '+(f/(M*g)).toFixed(1)+' times the weight of the object.':'No object: biceps only supports the forearm.';
+}
+document.getElementById('M').oninput=upd;document.getElementById('D').oninput=upd;upd();
+var masses=[1,2,4],cols=['var(--c1)','var(--c3)','var(--c2)'];
+var ds=[0.10,0.15,0.20,0.25,0.30,0.35,0.40];
+var t='<tr><th>d (m)</th>'+masses.map(function(x){return '<th>M = '+x+' kg</th>'}).join('')+'</tr>';
+ds.forEach(function(d){t+='<tr><td>'+d.toFixed(2)+'</td>'+masses.map(function(x){return '<td>'+Fb(x,d).toFixed(0)+'</td>'}).join('')+'</tr>'});
+document.getElementById('tbl').innerHTML=t;
+(function(){
+ var W=640,H=320,L=60,R=20,T=20,B=50,ymax=1000;
+ var x=function(d){return L+(d-0.1)/(0.3)*(W-L-R)};
+ var y=function(f){return H-B-f/ymax*(H-T-B)};
+ var s='';
+ for(var i=0;i<=5;i++){var v=i*200;s+='<line x1="'+L+'" x2="'+(W-R)+'" y1="'+y(v)+'" y2="'+y(v)+'" stroke="var(--line)"/><text x="'+(L-8)+'" y="'+(y(v)+4)+'" text-anchor="end" font-size="12" fill="var(--mute)" font-family="system-ui">'+v+'</text>'}
+ ds.forEach(function(d){s+='<text x="'+x(d)+'" y="'+(H-B+18)+'" text-anchor="middle" font-size="12" fill="var(--mute)" font-family="system-ui">'+d.toFixed(2)+'</text>'});
+ masses.forEach(function(M,i){
+  var p=ds.map(function(d){return x(d)+','+y(Fb(M,d))}).join(' ');
+  s+='<polyline points="'+p+'" fill="none" stroke="'+cols[i]+'" stroke-width="2.5"/>';
+  s+='<text x="'+(x(0.40)-4)+'" y="'+(y(Fb(M,0.40))-8)+'" text-anchor="end" font-size="12" fill="'+cols[i]+'" font-family="system-ui">M = '+M+' kg</text>';
+ });
+ s+='<text x="'+(W/2)+'" y="'+(H-8)+'" text-anchor="middle" font-size="13" fill="var(--ink)" font-family="system-ui">Object distance from elbow, d (m)</text>';
+ s+='<text transform="translate(16,'+(H/2-10)+') rotate(-90)" text-anchor="middle" font-size="13" fill="var(--ink)" font-family="system-ui">Biceps force, F_b (N)</text>';
+ document.getElementById('chart').innerHTML=s;
+})();
+</script>
+</body>
+</html>
